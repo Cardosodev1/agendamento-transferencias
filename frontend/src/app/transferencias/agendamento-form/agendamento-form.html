@@ -1,0 +1,111 @@
+<form class="card shadow-sm" [formGroup]="form" (ngSubmit)="agendar()" novalidate>
+  <div class="card-header bg-white">
+    <h2 class="h5 mb-0">Nova transferência</h2>
+  </div>
+
+  <div class="card-body">
+    @if (erro(); as mensagem) {
+      <div class="alert alert-danger" role="alert">{{ mensagem }}</div>
+    }
+    @if (sucesso(); as transferencia) {
+      <div class="alert alert-success" role="status">
+        Transferência agendada para {{ transferencia.dataTransferencia | date: 'dd/MM/yyyy' }} com
+        taxa de {{ transferencia.taxa | currency }}.
+      </div>
+    }
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label for="contaOrigem" class="form-label">Conta de origem</label>
+        <input
+          id="contaOrigem"
+          class="form-control"
+          formControlName="contaOrigem"
+          placeholder="XXXXXXXXXX"
+          inputmode="numeric"
+          maxlength="10"
+          autocomplete="off"
+          [class.is-invalid]="invalido('contaOrigem')"
+        />
+        <div class="invalid-feedback">Informe 10 dígitos numéricos.</div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="contaDestino" class="form-label">Conta de destino</label>
+        <input
+          id="contaDestino"
+          class="form-control"
+          formControlName="contaDestino"
+          placeholder="XXXXXXXXXX"
+          inputmode="numeric"
+          maxlength="10"
+          autocomplete="off"
+          [class.is-invalid]="invalido('contaDestino') || contasIguais()"
+        />
+        <div class="invalid-feedback">
+          @if (contasIguais()) {
+            A conta de destino deve ser diferente da conta de origem.
+          } @else {
+            Informe 10 dígitos numéricos.
+          }
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="valor" class="form-label">Valor (R$)</label>
+        <input
+          id="valor"
+          type="number"
+          class="form-control"
+          formControlName="valor"
+          min="0.01"
+          step="0.01"
+          placeholder="0,00"
+          [class.is-invalid]="invalido('valor')"
+        />
+        <div class="invalid-feedback">
+          Informe um valor maior que zero, com até 2 casas decimais.
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="dataTransferencia" class="form-label">Data da transferência</label>
+        <input
+          id="dataTransferencia"
+          type="date"
+          class="form-control"
+          formControlName="dataTransferencia"
+          [min]="hoje"
+          [class.is-invalid]="invalido('dataTransferencia')"
+        />
+        <div class="invalid-feedback">Informe a data da transferência.</div>
+      </div>
+    </div>
+
+    @let s = simulacao();
+    <div class="mt-4" aria-live="polite">
+      @if (s.estado === 'calculando') {
+        <p class="text-body-secondary mb-0">Calculando taxa…</p>
+      } @else if (s.estado === 'calculada') {
+        <p class="mb-0">
+          Taxa: <strong data-testid="taxa">{{ s.taxa | currency }}</strong>
+        </p>
+      } @else if (s.estado === 'indisponivel') {
+        <div class="alert alert-warning mb-0" role="alert" data-testid="taxa-indisponivel">
+          {{ s.mensagem }}
+        </div>
+      } @else {
+        <p class="text-body-secondary mb-0">Informe o valor e a data para calcular a taxa.</p>
+      }
+    </div>
+  </div>
+
+  <div class="card-footer bg-white text-end">
+    <button type="submit" class="btn btn-primary" [disabled]="!podeAgendar()">
+      @if (enviando()) {
+        <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+      }
+      Agendar transferência
+    </button>
+  </div>
+</form>

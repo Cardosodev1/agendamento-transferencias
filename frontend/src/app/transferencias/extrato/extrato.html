@@ -1,0 +1,41 @@
+<section class="card shadow-sm">
+  <div class="card-header bg-white d-flex justify-content-between align-items-center">
+    <h2 class="h5 mb-0">Extrato de agendamentos</h2>
+    <span class="badge text-bg-primary">{{ transferencias().length }}</span>
+  </div>
+
+  @if (carregando()) {
+    <div class="card-body text-body-secondary">Carregando…</div>
+  } @else if (transferencias().length === 0) {
+    <div class="card-body text-body-secondary">Nenhuma transferência agendada até o momento.</div>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Conta de origem</th>
+            <th scope="col">Conta de destino</th>
+            <th scope="col" class="text-end">Valor</th>
+            <th scope="col" class="text-end">Taxa</th>
+            <th scope="col">Data da transferência</th>
+            <th scope="col">Data de agendamento</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of transferencias(); track t.id) {
+            <tr>
+              <td>{{ t.id }}</td>
+              <td class="font-monospace">{{ t.contaOrigem }}</td>
+              <td class="font-monospace">{{ t.contaDestino }}</td>
+              <td class="text-end">{{ t.valor | currency }}</td>
+              <td class="text-end">{{ t.taxa | currency }}</td>
+              <td>{{ t.dataTransferencia | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ t.dataAgendamento | date: 'dd/MM/yyyy' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

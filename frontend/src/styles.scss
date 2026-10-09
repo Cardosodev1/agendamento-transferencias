@@ -1,1 +1,52 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --tm-verde: #006551;
+  --tm-verde-escuro: #004d3a;
+  --tm-verde-rgb: 0, 101, 81;
+  --tm-dourado: #c7800b;
+  --tm-texto: #323232;
+  --tm-fundo: #f5f5f5;
+
+  --bs-primary: var(--tm-verde);
+  --bs-primary-rgb: var(--tm-verde-rgb);
+  --bs-primary-text-emphasis: var(--tm-verde-escuro);
+  --bs-primary-bg-subtle: #e0efec;
+  --bs-primary-border-subtle: #99c1b9;
+  --bs-link-color: var(--tm-verde);
+  --bs-link-color-rgb: var(--tm-verde-rgb);
+  --bs-link-hover-color: var(--tm-verde-escuro);
+  --bs-body-color: var(--tm-texto);
+  --bs-focus-ring-color: rgba(var(--tm-verde-rgb), 0.25);
+}
+
+body {
+  background-color: var(--tm-fundo);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--tm-verde);
+  --bs-btn-border-color: var(--tm-verde);
+  --bs-btn-hover-bg: var(--tm-verde-escuro);
+  --bs-btn-hover-border-color: var(--tm-verde-escuro);
+  --bs-btn-active-bg: var(--tm-verde-escuro);
+  --bs-btn-active-border-color: var(--tm-verde-escuro);
+  --bs-btn-disabled-bg: var(--tm-verde);
+  --bs-btn-disabled-border-color: var(--tm-verde);
+  --bs-btn-focus-shadow-rgb: var(--tm-verde-rgb);
+}
+
+.form-control:focus {
+  border-color: var(--tm-verde);
+  box-shadow: 0 0 0 0.25rem rgba(var(--tm-verde-rgb), 0.25);
+}
+
+.card-header {
+  border-bottom: 2px solid var(--tm-dourado);
+}
+
+.card-header h2 {
+  color: var(--tm-verde-escuro);
+}
+
+.table > thead th {
+  color: var(--tm-verde-escuro);
+}
